@@ -634,3 +634,23 @@ input[type=number] {
 body.bg-autenticate{
     background-image: url('../svg/bg-auth.svg');
 }
+
+body{
+  background-image: url('../svg/bg-auth.svg');
+}
+
+.cbt-profile-siswa{
+  height: 100%;
+
+}
+
+.cbt-siswa-header{
+  height: 200px;
+}
+
+.cbt-content{
+  transform: translateY(-100px);
+  background-color: white;
+  border-radius: 3px;
+}
+

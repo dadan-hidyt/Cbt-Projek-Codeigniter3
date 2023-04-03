@@ -20,6 +20,6 @@ class Siswa extends Front {
 	 */
 	public function index()
 	{
-		var_dump($this->cek_login());
+		$this->view('home');
 	}
 }
