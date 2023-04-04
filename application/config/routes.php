@@ -9,3 +9,5 @@ $route['login'] = 'Home/index';
 $route['auth/cek'] = 'Auth/cek_login';
 
 $route['home'] = 'Siswa';
+$route['ujian/(:num)/(:num)/(:num).html'] = "Ujian/mulai/$1/$2/$3";
+$route['ujian/(:num)/confirm'] = 'Ujian/confirm/$1';

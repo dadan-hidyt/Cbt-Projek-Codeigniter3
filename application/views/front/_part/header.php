@@ -1,27 +1,24 @@
 <!-- header -->
-<div class="bg-autenticate bg-primary p-4 text-white cbt-siswa-header">
-    <div class="d-flex justify-content-between">
-        <div class="col-10">
-            <div class="logo-left">
-                <h3>CBT SMP 7 SMD</h3>
-                <span>&copy; dadansebaya</span>
+<div class="bg-autenticate bg-cbt p-4 text-white cbt-siswa-header">
+<div class="row no-gutters">
+            <div class="col-md-8 col-sm-8 col-6">
+                <img src="https://unbk.smppgrisatubdl.com/assets/CBT/Assets/Images/logo.png" id="img-logo">
             </div>
-        </div>
-        <div class="col-2">
-            <div class="cbt-profile-siswa">
-                <!-- <div class="row">
-                   <div class="col-md-8">
-                        <div class="nama font-bold text-white">
-                            Dadan Hidayat
+            <div class="col-md-4 col-sm-4 col-6">
+                <div class="user-header-info">
+                    <div class="d-inline float-right user-header-thumb" id="img-account">
+                        <div class="user-thumb-wrapper"><img src="https://unbk.smppgrisatubdl.com/assets/CBT/Assets/Images/no-image.png"></div>
+                    </div>
+                    <div class="d-inline float-right">
+                        <div class="user-header-wrapper">
+                            <div>
+                                <b class='nama_siswa'><?= $auth->nama ?? 'Tidak diketahui' ?> | <?= $auth->nisn ?? 'Tidak diketahui' ?></b>
+                            </div>
+							<a href="https://unbk.smppgrisatubdl.com/logout" class="btn btn-sm btn-danger">Logout</a>
                         </div>
-                        <a class="btn btn-danger" href="">Logout</a>
-                   </div>
-                   <div class="col-md-4">
-                        <img class="rounded" style="width:50px; height=40px" class="" src="assets/dadan.jpg" alt="">
-                   </div>
-                </div> -->
-            </div>
+                    </div>
+                </div>
+            </div>			
         </div>
-    </div>
 </div>
 <!-- e:header -->

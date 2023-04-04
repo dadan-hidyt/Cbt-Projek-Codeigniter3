@@ -10,6 +10,11 @@ class Home extends Front {
 		if($this->cek_login() !== false){
 			$view_name = 'sudah_login';
 		}
+		$ujian = [];
+		
+		
+
+
 		$this->setTitle('Login');
 		$bodyClass = "bg-autenticate";
 		return $this->view($view_name,compact('bodyClass'));

@@ -1,25 +1,21 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
-class Siswa extends Front {
+class Siswa extends Front
+{
 
-	/**
-	 * Index Page for this controller.
-	 *
-	 * Maps to the following URL
-	 * 		http://example.com/index.php/welcome
-	 *	- or -
-	 * 		http://example.com/index.php/welcome/index
-	 *	- or -
-	 * Since this controller is set as the default controller in
-	 * config/routes.php, it's displayed at http://example.com/
-	 *
-	 * So any other public methods not prefixed with an underscore will
-	 * map to /index.php/welcome/<method_name>
-	 * @see https://codeigniter.com/user_guide/general/urls.html
-	 */
+	public function __construct()
+	{
+		parent::__construct();
+	}
 	public function index()
 	{
-		$this->view('home');
+		$this->load->model('m_ujian');
+		$dat_ujian = [];
+		$ujian = $this->m_ujian->get_ujian($this->auth()->nisn);
+		if($ujian){
+			$dat_ujian = $ujian->result_object();
+		}
+		$this->view('home', compact('dat_ujian'));
 	}
 }

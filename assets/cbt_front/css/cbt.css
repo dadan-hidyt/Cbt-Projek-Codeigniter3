@@ -649,8 +649,121 @@ body{
 }
 
 .cbt-content{
-  transform: translateY(-100px);
+  transform: translateY(-80px);
   background-color: white;
   border-radius: 3px;
 }
 
+.bg-cbt{
+  background-position: center;
+  background-image: url('../bg/header-bg.png');
+}
+
+.user-thumb-wrapper img{
+  width: 60px;
+  cursor: pointer;
+  margin-left: 10px;
+  border-radius: 10px;
+  height: 50px;
+  background-color: white;
+}
+.waktu-ujian{
+  font-weight: bold;
+  border-radius: 10px;
+  padding: 10px;
+  border: 1px solid rgb(206, 206, 206);
+  margin-top: 10px;
+}
+.soal{
+  border-top: 3px solid #dedede;
+}
+.soal .no-soal{
+  padding: 10px;
+  text-align:center;
+  box-sizing: border-box;
+  color: white;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  background-color: #0095ff;
+}
+
+.pilihan{
+  padding: 10px;
+  display: flex;
+  align-content: center;
+  align-items: center;
+  box-sizing: border-box;
+}
+.pilihan .pilihan_item{
+  position: relative;
+  visibility: hidden;
+  
+}
+
+.pilihan .pilihan_item::before{
+  content: attr(data-abc);
+  display: block;
+  width: 34px;
+  visibility: visible;
+  background-color: rgb(223, 223, 223);
+  display: flex;
+  font-weight: bold;
+  border: 2px solid #535353;
+  border-radius: 20%;
+  top: 0;
+  left: -10px;
+  cursor: pointer;
+  bottom: 0;
+  right: 0;
+  align-items: center;
+  justify-content: center;
+  height: 34px;
+  position: absolute;
+  color: rgb(114, 113, 113);
+}
+.pilihan .pilihan_item:checked:before{
+  color: white;
+  background-color: rgb(0, 89, 255);
+
+}
+.pertanyaan{
+  margin-top:20px;
+}
+.pilihan .pilihan_item_label{
+  left: 20px;
+  position: relative;
+  display: block;
+}
+
+.pilihan .pilihan_group{
+  display: flex;
+  margin: 20px 0px;
+}
+
+@media (max-width:720px){
+  .user-header-info{
+    display: block;
+  }
+  .cbt-content{
+    transform: translateY(-80px);
+    background-color: white;
+    border-radius: 3px;
+  }
+  .cbt-siswa-header{
+    height: 240px;
+  }
+  
+}
+@media (max-width:420px){
+  .user-header-info{
+    font-size: small;
+  }
+
+  .user-header-info .user-header-wrapper .nama_siswa{
+    font-size: small;
+  }
+ 
+  #img-logo{
+    width: 160px;
+  }
+}
