@@ -20,6 +20,17 @@ class m_ujian extends CI_Model{
             return $dat;
         }
     }
+    public function get_jawaban($nisn,$id_ujian,$id_mapel,$id_soal){
+        $this->db->select('*');
+        $this->db->where('nisn',$nisn);
+        $this->db->where('id_ujian',$id_ujian);
+        $this->db->where('id_mapel',$id_mapel);
+        $this->db->where('id_soal',$id_soal);
+        $row = $this->db->get('tb_dump_jawaban');
+        if($row->num_rows() ==1){
+            return $row->row();
+        }
+    }
     public function get_waktu_ujian($id_ujian){
         $this->db->select('total_waktu');
         $this->db->where('id_ujian',$id_ujian);

@@ -55,21 +55,31 @@ class Ujian extends Front
                 $soal = [];
                 if ($soal_ujian) {
                     $soal = $soal_ujian->row();
+                } else {
+                    return redirect(site_url("ujian/{$id_ujian}/{$id_mapel}/1.html"));
                 }
                 //mendaptkan next soal dan back soal
                 $next = $this->m_soal->get_next_soal($nomor_soal, $id_ujian);
                 $back = $this->m_soal->get_back_soal($nomor_soal, $id_ujian);
+                //jawaban serkarang
+                $jawaban_sekarang = null;
+                if($row = $this->m_ujian->get_jawaban($this->auth()->nisn,$id_ujian,$id_mapel,$soal->id_soal)){
+                    $jawaban_sekarang = $row->jawaban_sekarang;
+                }
                 $data = array(
                     'sisa_waktu' => $waktu,
                     'id_ujian' => $id_ujian,
                     'id_mapel' => $id_mapel,
                     'soal_no' => $nomor_soal,
-                    'next' => $next,
-                    'back' => $back,
+                    'next' => $nomor_soal + 1,
+                    'back' => $nomor_soal - 1,
+                    'current' => $nomor_soal,
+                    'max' => $this->m_soal->get_max_soal($id_ujian),
+                    'min' => $this->m_soal->get_min_soal($id_ujian),
                     'waktu_akhir' => $dat->waktu_akhir,
+                    'jawaban_sekarang' => $jawaban_sekarang,
                     'soal' => $soal,
                 );
-
                 $this->setTitle("Soal no " . $id_mapel);
                 $this->view('ujian/mulai', compact('data'));
                 return 0;

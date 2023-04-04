@@ -13,7 +13,7 @@
             </div>
             <div class="card-body">
                 <div class="h3">
-                    Soal No: 1
+                    Soal No: <?= $data['soal']->no_soal; ?>
                 </div>
                 <div class="soal">
                     <div class="pertanyaan">
@@ -24,19 +24,19 @@
                     <div class="pilihan">
                         <div action="">
                             <div class="pilihan_group">
-                                <input class="pilihan_item" data-abc="A" type="radio" name="pilihan" id="pilihan" data-soal="<?= $data['soal']->id_soal ?>" value="A">
+                                <input <?= $data['jawaban_sekarang'] === "A" ? 'checked' : '' ?> class="pilihan_item" data-abc="A" type="radio" name="pilihan" id="pilihan" data-soal="<?= $data['soal']->id_soal ?>" value="A">
                                 <label class="pilihan_item_label" for=""><?= $data['soal']->a ?></label>
                             </div>
                             <div class="pilihan_group">
-                                <input class="pilihan_item" data-abc="B" type="radio" name="pilihan" id="pilihan" data-soal="<?= $data['soal']->id_soal ?>" value="B">
+                                <input <?= $data['jawaban_sekarang'] === "B" ? 'checked' : '' ?> class="pilihan_item" data-abc="B" type="radio" name="pilihan" id="pilihan" data-soal="<?= $data['soal']->id_soal ?>" value="B">
                                 <label class="pilihan_item_label" for=""><?= $data['soal']->a ?></label>
                             </div>
                             <div class="pilihan_group">
-                                <input class="pilihan_item" data-abc="C" type="radio" name="pilihan" id="pilihan" data-soal="<?= $data['soal']->id_soal ?>" value="C">
+                                <input <?= $data['jawaban_sekarang'] === "C" ? 'checked' : '' ?> class="pilihan_item" data-abc="C" type="radio" name="pilihan" id="pilihan" data-soal="<?= $data['soal']->id_soal ?>" value="C">
                                 <label class="pilihan_item_label" for=""><?= $data['soal']->a ?></label>
                             </div>
                             <div class="pilihan_group">
-                                <input class="pilihan_item" data-abc="D" type="radio" name="pilihan" id="pilihan" data-soal="<?= $data['soal']->id_soal ?>" value="D">
+                                <input <?= $data['jawaban_sekarang'] === "D" ? 'checked' : '' ?> class="pilihan_item" data-abc="D" type="radio" name="pilihan" id="pilihan" data-soal="<?= $data['soal']->id_soal ?>" value="D">
                                 <label class="pilihan_item_label" for=""><?= $data['soal']->d ?></label>
                             </div>
                         </div>
@@ -44,13 +44,12 @@
                 </div>
             </div>
             <div class="card-footer">
-                <?php if ($data['back'] != null) : ?>
+                <?php if ($data['current'] !== $data['min']) : ?>
                     <a href="<?= site_url("ujian/{$data['id_ujian']}/{$data['id_mapel']}/{$data['back']}.html") ?>" class="btn btn-primary">Back</a>
                 <?php endif; ?>
-                <?php if ($data['next'] == null) : ?>
+                <?php if ($data['current'] == $data['max']) : ?>
                     <a href="" class="btn btn-primary -right">SELESAI</a>
                 <?php else : ?>
-                    <a href="<?= site_url("ujian/{$data['id_ujian']}/{$data['id_mapel']}/{$data['next']}.html") ?>" class="btn btn-primary ">RAGU RAGU</a>
                     <a href="<?= site_url("ujian/{$data['id_ujian']}/{$data['id_mapel']}/{$data['next']}.html") ?>" class="btn btn-primary ">Next</a>
                 <?php endif; ?>
             </div>
