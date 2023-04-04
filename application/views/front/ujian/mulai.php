@@ -13,7 +13,11 @@
             </div>
             <div class="card-body">
                 <div class="h3">
-                    Soal No: <?= $data['soal']->no_soal; ?>
+                    <?php if ($data['jawaban_sekarang']) : ?>
+                        <span id="no_soal" class="text-success" style="text-shadow:0px 0px 2px"> Soal No: <?= $data['soal']->no_soal; ?></span>
+                    <?php else : ?>
+                        <span id="no_soal" class="" style="text-shadow:0px 0px 2px"> Soal No: <?= $data['soal']->no_soal; ?></span>
+                    <?php endif ?>
                 </div>
                 <div class="soal">
                     <div class="pertanyaan">
@@ -57,27 +61,57 @@
     </div>
 </div>
 
-<script>
-    function simpanJawaban(data) {
-        console.log(data)
-    }
-    $(document).ready(function() {
-        const pilihan = document.querySelectorAll('#pilihan');
-        pilihan.forEach(function(elem, key) {
-            elem.addEventListener('change', function(e) {
-                const pilihan = e.target.dataset.abc;
-                const soal = e.target.dataset.soal;
+<?php if ($data['soal']->type == 1) : ?>
+    <script>
+        function simpanJawaban(param) {
+            let data = new FormData();
+            data.append('jawaban_sekarang', param.pilihan);
+            data.append('id_soal', param.soal);
+            data.append('id_ujian', `<?= $data['id_ujian'] ?>`);
+            data.append('id_mapel', `<?= $data['id_mapel'] ?>`);
+            data.append('type', "PG");
 
-                try {
-                    simpanJawaban({
-                        soal: soal,
-                        pilihan: pilihan,
-                    })
-                } catch (error) {
-                    console.log(error);
-                };
+            axios.post(`<?= site_url('ujian/simpan') ?>/ujian/simpan`, data).then(function(dat) {
+                if (dat.data === 'Y') {
+                    document.getElementById('no_soal').style.color = 'green';
+                    $.toast({
+                        title: 'Suksess',
+                        subtitle: 'Sekarang',
+                        content: 'Jawaban anda berhasil di simpan.',
+                        type: 'success',
+                        delay: 3000
+                    });
+                } else {
+                    $.toast({
+                        title: 'Gagal',
+                        subtitle: 'Sekarang',
+                        content: 'Jawaban anda gagal di simpan.',
+                        type: 'error',
+                        delay: 3000
+                    });
+                }
+            }).catch(function(e) {
 
             });
+
+        }
+        $(document).ready(function() {
+            const pilihan = document.querySelectorAll('#pilihan');
+            pilihan.forEach(function(elem, key) {
+                elem.addEventListener('change', function(e) {
+                    const pilihan = e.target.dataset.abc;
+                    const soal = e.target.dataset.soal;
+                    try {
+                        simpanJawaban({
+                            soal: soal,
+                            pilihan: pilihan,
+                        })
+                    } catch (error) {
+                        console.log(error);
+                    };
+
+                });
+            })
         })
-    })
-</script>
+    </script>
+<?php endif; ?>

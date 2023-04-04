@@ -27,7 +27,7 @@ class m_ujian extends CI_Model{
         $this->db->where('id_mapel',$id_mapel);
         $this->db->where('id_soal',$id_soal);
         $row = $this->db->get('tb_dump_jawaban');
-        if($row->num_rows() ==1){
+        if($row->num_rows() >= 1){
             return $row->row();
         }
     }

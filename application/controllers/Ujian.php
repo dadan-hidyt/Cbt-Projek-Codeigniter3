@@ -21,6 +21,34 @@ class Ujian extends Front
             return redirect('home');
         }
     }
+    public function simpan()
+    {
+        if (!$this->input->is_ajax_request()) {
+            $dat = $this->input->post();
+            $dat['nisn'] = $this->auth()->nisn;
+            $select = $this->db->get_where('tb_dump_jawaban', [
+                'id_soal' => $dat['id_soal'],
+                'id_mapel' => $dat['id_mapel'],
+                'nisn' => $this->auth()->nisn,
+                'type' => $dat['type'],
+            ]);
+            if ($select->num_rows() >= 1) {
+                $this->db->reset_query();
+                $this->db->where('id_soal', $dat['id_soal']);
+                if ($this->db->update('tb_dump_jawaban', $dat)) {
+                    echo 'Y';
+                } else {
+                    echo "N";
+                }
+            } else {
+                if ($this->db->insert('tb_dump_jawaban', $dat)) {
+                    echo 'Y';
+                } else {
+                    echo "N";
+                }
+            }
+        }
+    }
     public function mulai($id_ujian = null, $id_mapel = null, $nomor_soal = null)
     {
         $this->load->model('m_ujian');
@@ -29,10 +57,10 @@ class Ujian extends Front
         //cek dulu apak siswa sudah melakukan ujian atau belum
         $this->db->where('nisn', $this->auth()->nisn);
         $this->db->where('id_ujian', $id_ujian);
-        $uj = $this->db->get('tb_siswa_ujian');
-        $dat = $uj->row();
-        //reset query
-        if ($uj->num_rows() === 0) {
+        $data_siswa_ujian = $this->db->get('tb_siswa_ujian');
+        $dat = $data_siswa_ujian->row();
+        //membuat data ujian
+        if ($data_siswa_ujian->num_rows() === 0) {
             $this->db->insert('tb_siswa_ujian', [
                 'nisn' => $this->auth()->nisn,
                 'id_ujian' => $id_ujian,
@@ -41,15 +69,18 @@ class Ujian extends Front
                 'waktu_akhir' => strtotime("+{$lama_ujian} minute"),
                 'ip' => $_SERVER['REMOTE_ADDR'],
             ]);
+            return redirect(site_url("ujian/{$id_ujian}/{$id_mapel}/1.html"));
         } else {
+            //me
             $waktu = $dat->waktu_akhir - time();
             $menit = floor($waktu / 60);
             $this->db->reset_query();
             $this->db->where('id', $dat->id);
             $this->db->update('tb_siswa_ujian', ['sisa_menit' => $menit]);
             //waktu habis
-            if ($dat->sisa_menit === 0 && $menit == 0) {
-                echo "Waktu Habis!";
+            if ($dat->sisa_menit < 1 && $menit < 1) {
+                $this->session->set_flashdata('msg', "Ujian telah berakhir dan sudah selesai!");
+                return redirect(site_url('home'));
             } else {
                 $soal_ujian = $this->m_soal->get_soal($id_ujian, $nomor_soal);
                 $soal = [];
@@ -63,7 +94,7 @@ class Ujian extends Front
                 $back = $this->m_soal->get_back_soal($nomor_soal, $id_ujian);
                 //jawaban serkarang
                 $jawaban_sekarang = null;
-                if($row = $this->m_ujian->get_jawaban($this->auth()->nisn,$id_ujian,$id_mapel,$soal->id_soal)){
+                if ($row = $this->m_ujian->get_jawaban($this->auth()->nisn, $id_ujian, $id_mapel, $soal->id_soal)) {
                     $jawaban_sekarang = $row->jawaban_sekarang;
                 }
                 $data = array(

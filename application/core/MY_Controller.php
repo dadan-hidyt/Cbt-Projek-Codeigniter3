@@ -54,7 +54,7 @@ class Front extends CI_Controller implements ControllerInterface
                 ]);
             }
         }
-        return $this->data['auth'];
+        return $this->data['auth'] ?? null;
     }
     public function view(?string $view, array $data = [])
     {

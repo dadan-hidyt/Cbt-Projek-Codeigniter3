@@ -8,6 +8,11 @@
             <div class="card-body">
                 <table class='table'>
                     <tbody>
+                    <tr>
+                            <td>Nama Ujian</td>
+                            <td>:</td>
+                            <td><?= $det_ujian->nama_ujian ?? '' ?></td>
+                        </tr>
                         <tr>
                             <td>Nama Mapel</td>
                             <td>:</td>

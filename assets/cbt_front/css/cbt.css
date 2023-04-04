@@ -708,8 +708,8 @@ body{
   background-color: rgb(223, 223, 223);
   display: flex;
   font-weight: bold;
-  border: 2px solid #535353;
-  border-radius: 20%;
+  border: 2px solid #c7c4c4;
+  border-radius: 100%;
   top: 0;
   left: -10px;
   cursor: pointer;
@@ -723,7 +723,7 @@ body{
 }
 .pilihan .pilihan_item:checked:before{
   color: white;
-  background-color: rgb(0, 89, 255);
+  background-color: rgb(0, 132, 255);
 
 }
 .pertanyaan{
