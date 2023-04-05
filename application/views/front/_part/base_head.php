@@ -11,6 +11,11 @@
     <!-- SCRIPTS -->
     <script src="<?= base_url('assets/cbt_front/app.bundle.js') ?>"></script>
     <script src="<?= base_url('assets/cbt_front/js/ping.min.js') ?>"></script>
+    <script src="<?= base_url('assets/cbt_front/js/countdown.js') ?>"></script>
+    <script src="<?= base_url('assets/cbt_front/js/sweetalert.js') ?>"></script>
+    <!-- feather -->
+    <link rel="stylesheet" href="<?= base_url('assets/cbt_front/vendor/feather-icons/font/css/iconfont.css') ?>">
+    <script src="<?= base_url('assets/cbt_front/vendor/feather-icons/feather.min.js') ?>"></script>
     <title><?= ($title ?? false) ? $title . " | Cbt" : "CBT"; ?></title>
 
     <script>
@@ -18,6 +23,7 @@
         window.base_url = base_url;
     </script>
 </head>
+
 <?php if ($bodyClass ?? false) : ?>
 
     <body class="<?= $bodyClass ?>">

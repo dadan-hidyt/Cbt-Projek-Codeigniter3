@@ -5,8 +5,14 @@
             <div class="card-header">
                 <div class="row g-3 d-flex align-items-center">
                     <div class="col-md-8">
-                        <div class="waktu-ujian">
-                            <span class="text-danger">Sisa Waktu: <span id="waktu_ujian"></span></ class="text-danger">&nbsp;<span class="badge text-lg badge-success" id="_ping">Mengecek koneksi...</span>
+                        <div class="waktu-ujian"><i data-feather="wifi"></i>
+                            <span class="text-info">Sisa Waktu: <span id="waktu_ujian"></span></span> &nbsp - &nbsp; 
+                            <svg id="indikator_wifi" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#dedede" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-wifi">
+                                <path d="M5 12.55a11 11 0 0 1 14.08 0"></path>
+                                <path d="M1.42 9a16 16 0 0 1 21.16 0"></path>
+                                <path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path>
+                                <line x1="12" y1="20" x2="12.01" y2="20"></line>
+                            </svg> <span class="text-lg text-success" id="_ping"></span>
                         </div>
                     </div>
                 </div>
@@ -62,46 +68,81 @@
 </div>
 <script>
     window.onload = function() {
-        //countdown ujian
+
+        //countdown waktu ujian
         dcountdown('<?= date("M d, Y H:i:s", $data['waktu_akhir']); ?>', 'waktu_ujian', function(e) {
-            console.log(e)
+            if (e == true) {
+                $.toast({
+                    title: 'Suksess',
+                    subtitle: 'Sekarang',
+                    content: "Waktu Ujian telah habis!",
+                    type: 'info',
+                    delay: 2000
+                });
+                //selesaikan
+                selesaikan();
+            }
+        }, function(hour, minute, second) {
+            if (minute === 20 && second == 59) {
+                $.toast({
+                    title: 'Suksess',
+                    subtitle: 'Sekarang',
+                    content: `Waktu anda ${minute} : ${second} lagi! buruan kerjakan soal anda!`,
+                    type: 'info',
+                    delay: 6000
+                });
+            } else if (minute === 5 && second == 59) {
+                $.toast({
+                    title: 'Suksess',
+                    subtitle: 'Sekarang',
+                    content: `Waktu anda ${minute} : ${second} lagi! buruan kerjakan soal anda!`,
+                    type: 'info',
+                    delay: 6000
+                });
+            }
         });
 
         $('#button_selesai').on('click', function(e) {
             let sisa_waktu = $('#waktu_ujian').text();
             if (confirm('Apakah anda yakin ingin menyelesaikan ujian? Sisa waktu anda \n' + sisa_waktu)) {
-                const data = new FormData();
-                data.append('sisa_waktu', sisa_waktu);
-                data.append('id_data_siswa_ujian', '<?= $data['id_data_siswa_ujian'] ?>');
-                axios.post(window.base_url + 'selesai_ujian', data).then(function(e) {
-                    if (e.data.status === true) {
-                        $.toast({
-                            title: 'Suksess',
-                            subtitle: 'Sekarang',
-                            content: `${e.data.msg}! Tunggu 3 detik untuk halaman akan otomatis di refresh`,
-                            type: 'success',
-                            delay: 3000
-                        });
-                        setTimeout(() => {
-                            window.location.replace(`${window.base_url}selesai_ujian/summary/<?= $data['id_data_siswa_ujian'] ?>`);
-                        }, 3000);
-                    } else {
-                        $.toast({
-                            title: 'Gagal',
-                            subtitle: 'Sekarang',
-                            content: `${e.data.msg}`,
-                            type: 'error',
-                            delay: 3000
-                        });
-                    }
-                });
+                selesaikan();
             }
         })
 
     }
+    //fungsi selesai ujian
+    function selesaikan() {
+        const data = new FormData();
+        let sisa_waktu = $('#waktu_ujian').text();
+        data.append('sisa_waktu', sisa_waktu);
+        data.append('id_data_siswa_ujian', '<?= $data['id_data_siswa_ujian'] ?>');
+        axios.post(window.base_url + 'selesai_ujian', data).then(function(e) {
+            if (e.data.status === true) {
+                $.toast({
+                    title: 'Suksess',
+                    subtitle: 'Sekarang',
+                    content: `${e.data.msg}! Tunggu 3 detik untuk halaman akan otomatis ke halaman lain!`,
+                    type: 'success',
+                    delay: 3000
+                });
+                setTimeout(() => {
+                    window.location.replace(`${window.base_url}selesai_ujian/summary/<?= $data['id_data_siswa_ujian'] ?>`);
+                }, 3000);
+            } else {
+                $.toast({
+                    title: 'Gagal',
+                    subtitle: 'Sekarang',
+                    content: `${e.data.msg}`,
+                    type: 'error',
+                    delay: 3000
+                });
+            }
+        });
+    }
 </script>
 <?php if ($data['soal']->type == 1) : ?>
     <script>
+        //simpan jawaban
         function simpanJawaban(param) {
             let data = new FormData();
             data.append('jawaban_sekarang', param.pilihan);
@@ -134,6 +175,7 @@
             });
 
         }
+        //proses simpan jawaban
         $(document).ready(function() {
             const pilihan = document.querySelectorAll('#pilihan');
             pilihan.forEach(function(elem, key) {
@@ -146,11 +188,11 @@
                             pilihan: pilihan,
                         })
                     } catch (error) {
-                        console.log(error);
+                        alert("Kesalahan saat menyimpan jawaban!")
                     };
 
                 });
-            })
-        })
+            });
+        });
     </script>
 <?php endif; ?>

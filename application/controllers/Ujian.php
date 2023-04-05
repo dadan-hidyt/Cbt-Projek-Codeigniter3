@@ -84,7 +84,7 @@ class Ujian extends Front
             $this->db->update('tb_siswa_ujian', ['sisa_menit' => $menit]);
             //waktu habis
             if ($dat->selesai == 1) {
-                $this->session->set_flashdata('msg', "Ujian telah berakhir dan sudah selesai!");
+                $this->session->set_flashdata('msg', "Ujian yang anda pilih sudah di kerjakan!");
                 return redirect(site_url('home'));
             } else {
                 //mendapatkan soal berdasarkan id ujian dan nomor soal
@@ -177,7 +177,7 @@ class Ujian extends Front
                     }
                 }
             }
-
+            //memulai transasksi
             $this->db->trans_start();
             $this->db->insert('tb_hasil_ujian', [
                 'waktu' => time(),
@@ -218,8 +218,13 @@ class Ujian extends Front
     {
         echo date("M d, Y H:i:s");
     }
-    public function summary($id)
+    public function summary($id = null)
     {
-        echo $id;
+        $this->setTitle("Summary");
+        $this->load->model('m_siswa_ujian');
+        $result = $this->m_siswa_ujian->get_siswa_ujian_full($this->auth()->nisn, $id)->row_object();
+        $this->view('ujian/summary',[
+            'result' => $result,
+        ]);
     }
 }

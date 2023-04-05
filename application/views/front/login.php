@@ -19,7 +19,6 @@
                     </div>
                     <div class="form-group">
                         <button id="btn_login" name="btn-login" class="btn btn-block btn-primary">LOGIN</button>
-                        <div class="mt-4 badge badge-primary" id="_ping"></div>
                     </div>
                 </form>
             </div>

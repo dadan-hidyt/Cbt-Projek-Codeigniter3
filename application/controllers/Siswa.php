@@ -11,6 +11,7 @@ class Siswa extends Front
 	public function index()
 	{
 		$this->load->model('m_ujian');
+		$this->load->model('m_siswa_ujian');
 		$dat_ujian = [];
 		$ujian = $this->m_ujian->get_ujian($this->auth()->nisn);
 		if($ujian){

@@ -7,7 +7,7 @@
             <h4>LIST UJIAN</h4>
         </div>
         <?php if ($this->session->flashdata('msg')) : ?>
-            <p class="alert alert-danger"><?= $this->session->flashdata('msg') ?></p>
+            <p style="border-radius:0;" class="alert alert-info"><?= $this->session->flashdata('msg') ?></p>
         <?php endif; ?>
         <div class="list-ujian">
             <div class="table-responsive">
