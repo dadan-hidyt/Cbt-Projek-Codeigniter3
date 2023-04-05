@@ -1,4 +1,8 @@
 <?php
+
+/**
+ * @author dadan <dadanhidyt@gmail.com>
+ */
 class Ujian extends Front
 {
     public function __construct()
@@ -21,6 +25,7 @@ class Ujian extends Front
             return redirect('home');
         }
     }
+    //bagian simpan jawaban dan nanti masuk ke nilai
     public function simpan()
     {
         if (!$this->input->is_ajax_request()) {
@@ -122,13 +127,72 @@ class Ujian extends Front
     public function selesai()
     {
         $sisa_waktu = $this->input->post('sisa_waktu');
+        //meload model siswa_ujian
+        $this->load->model('m_siswa_ujian');
+        //meload model ujian
+        $this->load->model('m_ujian');
+        //meload model_soal
+        $this->load->model('m_soal');
+        //id siswa ujian 
         $id = $this->input->post('id_data_siswa_ujian');
-        //ambil berdasarkan nisn dan id
-        $this->db->where('nisn', $this->auth()->nisn);
-        $this->db->where('id', $id);
-        $data = $this->db->get('tb_siswa_ujian');
+        //ambil data siswa ujian beradasarkan id nya dan nisn siswa
+        $data = $this->m_siswa_ujian->get_siswa_ujian($this->auth()->nisn, $id);
+        //jika data yang di ambil ada > 1
         if ($data->num_rows() == 1) {
-            $this->db->reset_query();
+            //fetch data nya
+            $data_siswa_ujian = $data->row();
+            //mengambil data ujian pada tabel ujian berdasarkan id ujian dan nisn
+            $data_ujian = $this->m_ujian->get_ujian($this->auth()->nisn, $data_siswa_ujian->id_ujian)->row();
+            //mendapatkan soal berdasaran id ujian
+            $data_soal = $this->m_soal->get_soal($data_siswa_ujian->id_ujian);
+            //mendefinisikan variabel
+            $jmlh_pg = $data_ujian->jmlh_pg;
+            $detail_benar = [];
+            $detail_salah = [];
+            $detail_kosong = [];
+            $jmlh_benar = 0;
+            $jmlh_kosong = 0;
+            $jmlh_salah = 0;
+            //menghitung berapa yang di isi, berapa yang tidak  dan berapa yang kosong
+            foreach ($data_soal->result_object() as $row) {
+                //mendaptkan data berdasrkan id soal pada tabel dump jawaban
+                $query_dump_jawaban = $this->db->get_where('tb_dump_jawaban', [
+                    'id_ujian' => $data_siswa_ujian->id_ujian,
+                    'nisn' => $this->auth()->nisn,
+                    'id_soal' => $row->id_soal,
+                ]);
+                //jika data nya 0 maka soal di anggap belum di jawab
+                if ($query_dump_jawaban->num_rows() === 0) {
+                    $detail_kosong[] = $row->no_soal;
+                    $jmlh_kosong++;
+                } else {
+                    $result = $query_dump_jawaban->row();
+                    //jika jawaban sama dengan kunci jawaban
+                    if ($result->jawaban_sekarang === $row->kunci) {
+                        $detail_benar[] = $row->no_soal;
+                        $jmlh_benar++;
+                    } else {
+                        $detail_salah[] = $row->no_soal;
+                        $jmlh_salah++;
+                    }
+                }
+            }
+
+            $this->db->trans_start();
+            $this->db->insert('tb_hasil_ujian', [
+                'waktu' => time(),
+                'kosong' => $jmlh_kosong,
+                'benar' => $jmlh_benar,
+                'salah' => $jmlh_salah,
+                'poin' => ($jmlh_benar / $data_soal->num_rows()) * 100,
+                'id_ujian' => $data_siswa_ujian->id_ujian,
+                'nisn' => $this->auth()->nisn,
+                'detail_benar' => implode('|', $detail_benar),
+                'detail_salah' => implode('|', $detail_salah),
+                'detail_kosong' => implode('|', $detail_kosong),
+            ]);
+
+
             $this->db->where('nisn', $this->auth()->nisn);
             $this->db->where('id', $id);
             $update = $this->db->update('tb_siswa_ujian', [
@@ -140,11 +204,13 @@ class Ujian extends Front
                     'status' => true,
                     'msg' => "Ujian berhasil di simpan!",
                 ]);
+                $this->db->trans_commit();
             } else {
                 echo json_encode([
                     'status' => false,
-                    'msg' => "Ujian gagal di simpan! sebaiknya jangan merefresh halaman!",
+                    'msg' => "Ujian gagal di simpan!",
                 ]);
+                $this->db->trans_rollback();
             }
         }
     }
@@ -152,7 +218,8 @@ class Ujian extends Front
     {
         echo date("M d, Y H:i:s");
     }
-    public function summary($id){
+    public function summary($id)
+    {
         echo $id;
     }
 }
