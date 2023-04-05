@@ -11,3 +11,7 @@ $route['auth/cek'] = 'Auth/cek_login';
 $route['home'] = 'Siswa';
 $route['ujian/(:num)/(:num)/(:num).html'] = "Ujian/mulai/$1/$2/$3";
 $route['ujian/(:num)/confirm'] = 'Ujian/confirm/$1';
+
+$route['waktu_server'] = "Ujian/waktu_server";
+$route['selesai_ujian'] = "Ujian/selesai";
+$route['selesai_ujian/summary/(:num)'] = "Ujian/summary/$1";

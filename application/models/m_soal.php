@@ -1,11 +1,11 @@
 <?php
 class m_soal extends CI_Model{
     public $tb_soal = 'tb_soal';
-    public function get_soal($id_ujian,$id_soal){
+    public function get_soal($id_ujian,$no_soal){
         $this->db->select('*');
         $this->db->from($this->tb_soal);
         $this->db->where('id_ujian',$id_ujian);
-        $this->db->where('id_soal',$id_soal);
+        $this->db->where('no_soal',$no_soal);
         $this->db->order_by('id_soal','rand()');
         $row = $this->db->get();
         if($row->num_rows() > 0) {

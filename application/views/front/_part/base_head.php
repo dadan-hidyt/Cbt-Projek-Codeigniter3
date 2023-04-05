@@ -15,6 +15,7 @@
 
     <script>
         const base_url = '<?= base_url(); ?>';
+        window.base_url = base_url;
     </script>
 </head>
 <?php if ($bodyClass ?? false) : ?>

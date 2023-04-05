@@ -6,7 +6,7 @@
                 <div class="row g-3 d-flex align-items-center">
                     <div class="col-md-8">
                         <div class="waktu-ujian">
-                            <span>Sisa Waktu: <?= $data['sisa_waktu'] / 60 ?> Menit</span>&nbsp;<span class="badge text-lg badge-success" id="_ping">Mengecek koneksi...</span>
+                            <span class="text-danger">Sisa Waktu: <span id="waktu_ujian"></span></ class="text-danger">&nbsp;<span class="badge text-lg badge-success" id="_ping">Mengecek koneksi...</span>
                         </div>
                     </div>
                 </div>
@@ -52,7 +52,7 @@
                     <a href="<?= site_url("ujian/{$data['id_ujian']}/{$data['id_mapel']}/{$data['back']}.html") ?>" class="btn btn-primary">Back</a>
                 <?php endif; ?>
                 <?php if ($data['current'] == $data['max']) : ?>
-                    <a href="" class="btn btn-primary -right">SELESAI</a>
+                    <button class="btn btn-primary" id="button_selesai">Selesai</button>
                 <?php else : ?>
                     <a href="<?= site_url("ujian/{$data['id_ujian']}/{$data['id_mapel']}/{$data['next']}.html") ?>" class="btn btn-primary ">Next</a>
                 <?php endif; ?>
@@ -60,7 +60,46 @@
         </div>
     </div>
 </div>
+<script>
+    window.onload = function() {
+        //countdown ujian
+        dcountdown('<?= date("M d, Y H:i:s", $data['waktu_akhir']); ?>', 'waktu_ujian', function(e) {
+            console.log(e)
+        });
 
+        $('#button_selesai').on('click', function(e) {
+            let sisa_waktu = $('#waktu_ujian').text();
+            if (confirm('Apakah anda yakin ingin menyelesaikan ujian? Sisa waktu anda \n' + sisa_waktu)) {
+                const data = new FormData();
+                data.append('sisa_waktu', sisa_waktu);
+                data.append('id_data_siswa_ujian', '<?= $data['id_data_siswa_ujian'] ?>');
+                axios.post(window.base_url + 'selesai_ujian', data).then(function(e) {
+                    if (e.data.status === true) {
+                        $.toast({
+                            title: 'Suksess',
+                            subtitle: 'Sekarang',
+                            content: `${e.data.msg}! Tunggu 3 detik untuk halaman akan otomatis di refresh`,
+                            type: 'success',
+                            delay: 3000
+                        });
+                        setTimeout(() => {
+                            window.location.replace(`${window.base_url}selesai_ujian/summary/<?= $data['id_data_siswa_ujian'] ?>`);
+                        }, 3000);
+                    } else {
+                        $.toast({
+                            title: 'Gagal',
+                            subtitle: 'Sekarang',
+                            content: `${e.data.msg}`,
+                            type: 'error',
+                            delay: 3000
+                        });
+                    }
+                });
+            }
+        })
+
+    }
+</script>
 <?php if ($data['soal']->type == 1) : ?>
     <script>
         function simpanJawaban(param) {

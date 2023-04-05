@@ -78,10 +78,11 @@ class Ujian extends Front
             $this->db->where('id', $dat->id);
             $this->db->update('tb_siswa_ujian', ['sisa_menit' => $menit]);
             //waktu habis
-            if ($dat->sisa_menit < 1 && $menit < 1) {
+            if ($dat->selesai == 1) {
                 $this->session->set_flashdata('msg', "Ujian telah berakhir dan sudah selesai!");
                 return redirect(site_url('home'));
             } else {
+                //mendapatkan soal berdasarkan id ujian dan nomor soal
                 $soal_ujian = $this->m_soal->get_soal($id_ujian, $nomor_soal);
                 $soal = [];
                 if ($soal_ujian) {
@@ -108,6 +109,7 @@ class Ujian extends Front
                     'max' => $this->m_soal->get_max_soal($id_ujian),
                     'min' => $this->m_soal->get_min_soal($id_ujian),
                     'waktu_akhir' => $dat->waktu_akhir,
+                    'id_data_siswa_ujian' => $dat->id,
                     'jawaban_sekarang' => $jawaban_sekarang,
                     'soal' => $soal,
                 );
@@ -116,5 +118,41 @@ class Ujian extends Front
                 return 0;
             }
         }
+    }
+    public function selesai()
+    {
+        $sisa_waktu = $this->input->post('sisa_waktu');
+        $id = $this->input->post('id_data_siswa_ujian');
+        //ambil berdasarkan nisn dan id
+        $this->db->where('nisn', $this->auth()->nisn);
+        $this->db->where('id', $id);
+        $data = $this->db->get('tb_siswa_ujian');
+        if ($data->num_rows() == 1) {
+            $this->db->reset_query();
+            $this->db->where('nisn', $this->auth()->nisn);
+            $this->db->where('id', $id);
+            $update = $this->db->update('tb_siswa_ujian', [
+                'sisa_waktu' => $sisa_waktu,
+                'selesai' => 1,
+            ]);
+            if ($update) {
+                echo json_encode([
+                    'status' => true,
+                    'msg' => "Ujian berhasil di simpan!",
+                ]);
+            } else {
+                echo json_encode([
+                    'status' => false,
+                    'msg' => "Ujian gagal di simpan! sebaiknya jangan merefresh halaman!",
+                ]);
+            }
+        }
+    }
+    public function waktu_server()
+    {
+        echo date("M d, Y H:i:s");
+    }
+    public function summary($id){
+        echo $id;
     }
 }
