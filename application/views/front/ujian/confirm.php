@@ -9,35 +9,35 @@
                 <table class='table'>
                     <tbody>
                     <tr>
-                            <td>Nama Ujian</td>
+                            <th>Nama Ujian</th>
                             <td>:</td>
                             <td><?= $det_ujian->nama_ujian ?? '' ?></td>
                         </tr>
                         <tr>
-                            <td>Nama Mapel</td>
+                            <th>Nama Mapel</th>
                             <td>:</td>
                             <td><?= $det_ujian->nama_mapel ?? '' ?></td>
                         </tr>
                         <tr>
-                            <td>Guru Mata Pelajaran </td>
+                            <th>Guru Mata Pelajaran </th>
                             <td>:</td>
 
                             <td><b><?= ucwords($det_ujian->guru_mapel) ?></b></td>
                         </tr>
                         <tr>
-                            <td>Jumlah Soal PG: </td>
+                            <th>Jumlah Soal PG </th>
                             <td>:</td>
 
                             <td><?= $det_ujian->jmlh_pg == 0 ?   'tidak ada' : $det_ujian->jmlh_pg . " Butir"; ?></td>
                         </tr>
                         <tr>
-                            <td>Jumlah Soal Essay: </td>
+                            <th>Jumlah Soal Essay </th>
                             <td>:</td>
 
                             <td><?= $det_ujian->jmlh_essay == 0 ?   'tidak ada' : $det_ujian->jmlh_essay . " Butir"; ?></td>
                         </tr>
                         <tr>
-                            <td>Waktu Pengerjaan </td>
+                            <th>Waktu Pengerjaan </th>
                             <td>:</td>
                             <td><?= $det_ujian->total_waktu ?> Menit</td>
                         </tr>

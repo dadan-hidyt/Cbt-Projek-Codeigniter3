@@ -103,6 +103,10 @@ class Ujian extends Front
                 if ($row = $this->m_ujian->get_jawaban($this->auth()->nisn, $id_ujian, $id_mapel, $soal->id_soal)) {
                     $jawaban_sekarang = $row->jawaban_sekarang;
                 }
+
+                $data_ujian = $this->m_ujian->get_ujian($this->auth()->nisn, $id_ujian)->row();
+                
+                
                 $data = array(
                     'sisa_waktu' => $waktu,
                     'id_ujian' => $id_ujian,
@@ -117,6 +121,7 @@ class Ujian extends Front
                     'id_data_siswa_ujian' => $dat->id,
                     'jawaban_sekarang' => $jawaban_sekarang,
                     'soal' => $soal,
+                    'data_ujian' => $data_ujian,
                 );
                 $this->setTitle("Soal no " . $id_mapel);
                 $this->view('ujian/mulai', compact('data'));
@@ -222,8 +227,13 @@ class Ujian extends Front
     {
         $this->setTitle("Summary");
         $this->load->model('m_siswa_ujian');
-        $result = $this->m_siswa_ujian->get_siswa_ujian_full($this->auth()->nisn, $id)->row_object();
-        $this->view('ujian/summary',[
+        $result = $this->m_siswa_ujian->get_siswa_ujian_full($this->auth()->nisn, $id);
+        if($result && $result->num_rows() >= 1) {
+            $result = $result->row_object();
+        } else {
+            return redirect(site_url('home'));
+        }
+        $this->view('ujian/summary', [
             'result' => $result,
         ]);
     }

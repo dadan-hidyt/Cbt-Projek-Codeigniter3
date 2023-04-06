@@ -3,7 +3,7 @@
         <div class="cbt-auth-card shadow-sm rounded">
             <div class="cbt-auth-card-header">
                 <div class="cbt-auth-logo">
-                    <h4>LOGIN CBT MI 2 SUMEDANG</h4>
+                    <h4>SMK ABC</h4>
                     <h4>2023</h4>
                 </div>
             </div>

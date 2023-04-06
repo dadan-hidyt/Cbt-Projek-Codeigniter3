@@ -3,7 +3,14 @@ class m_siswa extends CI_Model
 {
     private $table = 'tb_siswa';
     private $fk = 'nisn';
-
+    public function all(){
+        $this->db->select('*');
+        $this->db->join('tb_kelas','tb_kelas.id = tb_siswa.id_kelas');
+        $dat = $this->db->get($this->table);
+        if($dat->num_rows() >= 1){
+            return $dat;
+        }
+    }
     public function get_by_nisn(?string $no_peserta)
     {
         $this->db->select("*");

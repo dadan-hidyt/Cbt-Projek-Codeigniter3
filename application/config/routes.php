@@ -15,3 +15,11 @@ $route['ujian/(:num)/confirm'] = 'Ujian/confirm/$1';
 $route['waktu_server'] = "Ujian/waktu_server";
 $route['selesai_ujian'] = "Ujian/selesai";
 $route['selesai_ujian/summary/(:num)'] = "Ujian/summary/$1";
+
+/**
+ * route for backofice
+ */
+
+$route['backoffice/login'] = "backoffice/Login";
+$route['backoffice'] = "backoffice/Login";
+$route['backoffice/master/siswa'] = 'backoffice/Siswa/index';

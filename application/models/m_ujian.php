@@ -20,7 +20,7 @@ class m_ujian extends CI_Model{
             return $dat;
         }
     }
-    public function get_siswa_ujian($nisn, $id = null){
+    public function get_pilihan($id_ujian){
         
     }
     public function get_jawaban($nisn,$id_ujian,$id_mapel,$id_soal){

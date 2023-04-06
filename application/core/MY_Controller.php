@@ -18,16 +18,23 @@ trait ControllerTrait
 
 class Backoffice extends CI_Controller implements ControllerInterface
 {
+    public $view_path = "backoffice";
+    public $data = [];
     public function __construct()
     {
         parent::__construct();
     }
     public function setTitle(?string $title = null)
     {
+        $this->data['title'] = $title;
     }
 
     public function view(?string $view, array $data = [])
     {
+        $data = array_merge($this->data, $data);
+        $content = $this->load->view($this->view_path."/{$view}.php",$data,true);
+        $data['content'] = $content;
+        $this->load->view($this->view_path . '/_layout.php', ['data'=>$data]);
     }
 }
 

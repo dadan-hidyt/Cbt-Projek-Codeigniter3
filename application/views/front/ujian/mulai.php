@@ -6,7 +6,7 @@
                 <div class="row g-3 d-flex align-items-center">
                     <div class="col-md-8">
                         <div class="waktu-ujian"><i data-feather="wifi"></i>
-                            <span class="text-info">Sisa Waktu: <span id="waktu_ujian"></span></span> &nbsp - &nbsp; 
+                            <span class="text-info">Sisa Waktu: <span id="waktu_ujian"></span></span> &nbsp - &nbsp;
                             <svg id="indikator_wifi" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#dedede" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-wifi">
                                 <path d="M5 12.55a11 11 0 0 1 14.08 0"></path>
                                 <path d="M1.42 9a16 16 0 0 1 21.16 0"></path>
@@ -29,26 +29,20 @@
                     <div class="pertanyaan">
                         <p>
                             <?= $data['soal']->pertanyaan; ?>
+                            
                         </p>
+                        <?php if (!empty($data['soal']->audio_source)) : ?>
+                                <audio class="pertanyaan_audio" controls src="<?= base_url($data['soal']->audio_source) ?>"></audio>
+                            <?php endif; ?>
                     </div>
                     <div class="pilihan">
                         <div action="">
-                            <div class="pilihan_group">
-                                <input <?= $data['jawaban_sekarang'] === "A" ? 'checked' : '' ?> class="pilihan_item" data-abc="A" type="radio" name="pilihan" id="pilihan" data-soal="<?= $data['soal']->id_soal ?>" value="A">
-                                <label class="pilihan_item_label" for=""><?= $data['soal']->a ?></label>
-                            </div>
-                            <div class="pilihan_group">
-                                <input <?= $data['jawaban_sekarang'] === "B" ? 'checked' : '' ?> class="pilihan_item" data-abc="B" type="radio" name="pilihan" id="pilihan" data-soal="<?= $data['soal']->id_soal ?>" value="B">
-                                <label class="pilihan_item_label" for=""><?= $data['soal']->a ?></label>
-                            </div>
-                            <div class="pilihan_group">
-                                <input <?= $data['jawaban_sekarang'] === "C" ? 'checked' : '' ?> class="pilihan_item" data-abc="C" type="radio" name="pilihan" id="pilihan" data-soal="<?= $data['soal']->id_soal ?>" value="C">
-                                <label class="pilihan_item_label" for=""><?= $data['soal']->a ?></label>
-                            </div>
-                            <div class="pilihan_group">
-                                <input <?= $data['jawaban_sekarang'] === "D" ? 'checked' : '' ?> class="pilihan_item" data-abc="D" type="radio" name="pilihan" id="pilihan" data-soal="<?= $data['soal']->id_soal ?>" value="D">
-                                <label class="pilihan_item_label" for=""><?= $data['soal']->d ?></label>
-                            </div>
+                            <?php foreach (range("A", strtoupper($data['data_ujian']->pilihan_sampai)) as $item) : ?>
+                                <div class="pilihan_group">
+                                    <input <?= $data['jawaban_sekarang'] === strtoupper($item) ? 'checked' : '' ?> class="pilihan_item" data-abc="<?= strtoupper($item) ?>" type="radio" name="pilihan" id="pilihan" data-soal="<?= $data['soal']->id_soal ?>" value="<?= strtoupper($item) ?>">
+                                    <label class="pilihan_item_label" for=""><?= $data['soal']->{strtolower($item)} ?></label>
+                                </div>
+                            <?php endforeach ?>
                         </div>
                     </div>
                 </div>
@@ -101,7 +95,7 @@
                 });
             }
         });
-
+        //klik buton selesai
         $('#button_selesai').on('click', function(e) {
             let sisa_waktu = $('#waktu_ujian').text();
             if (confirm('Apakah anda yakin ingin menyelesaikan ujian? Sisa waktu anda \n' + sisa_waktu)) {
