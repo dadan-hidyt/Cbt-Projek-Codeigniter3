@@ -23,3 +23,4 @@ $route['selesai_ujian/summary/(:num)'] = "Ujian/summary/$1";
 $route['backoffice/login'] = "backoffice/Login";
 $route['backoffice'] = "backoffice/Login";
 $route['backoffice/master/siswa'] = 'backoffice/Siswa/index';
+$route['backoffice/master/siswa/buat'] = 'backoffice/Siswa/add_form';

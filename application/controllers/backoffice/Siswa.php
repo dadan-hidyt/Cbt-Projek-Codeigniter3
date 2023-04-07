@@ -13,4 +13,7 @@ class Siswa extends Backoffice{
 		}
 		return $this->view('siswa/show',compact('siswa'));
 	}
+	public function add_form(){
+		return $this->view('siswa/tambah');
+	}
 }

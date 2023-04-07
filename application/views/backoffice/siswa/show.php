@@ -6,10 +6,11 @@
 			<div class="card">
 				<div class="card-header">
 					<div class="action border p-3 rounded">
-						<button id="tambah_siswa" class="btn btn-primary btn-sm">TAMBAH</button>
+						<a href="<?= site_url('backoffice/master/siswa/buat') ?>" id="tambah_siswa" class="btn btn-primary btn-sm">TAMBAH</a>
 					</div>
 				</div>
 				<div class="card-body">
+					<p class="alert alert-info">Data berhasil di tambahakn!</p>
 					<table id="datatable" class="table table-bordered">
 						<thead>
 							<tr>
@@ -66,33 +67,6 @@
 </div>
 <!-- modal tambah -->
 
-<!-- Modal -->
-<div class="modal modal-top fade" id="modal-tambah-siswa" tabindex="-1">
-	<div class="modal-dialog">
-		<form class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title" id="modalTopTitle">Modal tambah data</h5>
-				<button
-				type="button"
-				class="btn-close"
-				data-bs-dismiss="modal"
-				aria-label="Close"
-				></button>
-			</div>
-			<div class="modal-body">
-				<form class="form" id='form-tambah-data'> 
-                                         
-				</form>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">
-					Close
-				</button>
-				<button type="button" class="btn btn-primary">Save</button>
-			</div>
-		</form>
-	</div>
-</div>
 
 <!-- modal tambah -->
 <script>
